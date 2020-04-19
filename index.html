@@ -22,26 +22,46 @@
         let painting = false
         ctx.fillStyle = "black"
         ctx.strokeStyle = "none"
+        var isTouchDevice = "ontouchstart" in document.documentElement
 
-        canvas.onmousedown = () => {
-            painting = true;
-        }
-        canvas.onmousemove = (e) => {
-            if (painting === true) {
-                // console.log(e.clientX)
-                // console.log(e.clientY)
-                // ctx.fillRect(e.clientX - 5, e.clientY - 5, 10, 10)
+
+        // 画点，点连成线
+        // console.log(isTouchDevice)
+        if (isTouchDevice) {
+            canvas.ontouchmove = (e) => {
+                // console.log(e)
+                let x = e.touches[0].clientX
+                // console.log(2)
+                let y = e.touches[0].clientY
+                // console.log(3)
                 ctx.beginPath();
-                ctx.arc(e.clientX, e.clientY, 5, 0, 2 * Math.PI)
+                // console.log(4)
+                ctx.arc(x, y, 5, 0, 2 * Math.PI)
                 ctx.stroke()
                 ctx.fill()
-            } else {
-                console.log("什么也不做")
+            }
+        } else {
+            canvas.onmousedown = () => {
+                painting = true;
+            }
+            canvas.onmousemove = (e) => {
+                if (painting === true) {
+                    // console.log(e.clientX)
+                    // console.log(e.clientY)
+                    // ctx.fillRect(e.clientX - 5, e.clientY - 5, 10, 10)
+                    ctx.beginPath();
+                    ctx.arc(e.clientX, e.clientY, 5, 0, 2 * Math.PI)
+                    ctx.stroke()
+                    ctx.fill()
+                } else {
+                    console.log("什么也不做")
+                }
+            }
+            canvas.onmouseup = () => {
+                painting = false
             }
         }
-        canvas.onmouseup = () => {
-            painting = false
-        }
+
     </script>
 </body>
 <!-- div画板 -->
